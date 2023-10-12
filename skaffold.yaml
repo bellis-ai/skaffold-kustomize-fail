@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: helmtest
+manifests:
+  kustomize:
+    paths:
+    - ./kustomize
+deploy:
+  kubeContext: custom
+  helm:
+    releases:
+      # https://artifacthub.io/packages/helm/bitnami/redis
+      - name: redis
+        createNamespace: true
+        remoteChart: redis
+        repo: "https://charts.bitnami.com/bitnami"
+        setValues: 
+          "master.persistence.enabled": "true"
+          "replica.replicaCount": "1"
